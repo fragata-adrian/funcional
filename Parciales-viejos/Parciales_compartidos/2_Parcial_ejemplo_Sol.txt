@@ -1,0 +1,52 @@
+-- Programación Funcional - Segundo Parcial
+-- Modificar nombre del archivo por "nombre-apellido.hs"
+
+-------------- Ejercicio 1 -----------------
+
+-- a) Definir, sin usar recursión, la función map2 :: (a -> b) -> (a -> c) -> [a] -> [(b,c)]
+-- que aplica ambas funciones a cada elemento de la lista devolviendo un par.
+
+map2 :: (a -> b) -> (a -> c) -> [a] -> [(b,c)]
+map2 f g = map (\x -> (f x, g x)) 
+
+-- b) usar map2 para definir la función grafico :: (a -> b) -> [a] -> [(a,b)]
+-- Ej: grafico (*2) [1,2,3] ~> [(1,2),(2,4),(3,6)]
+
+grafico :: (a -> b) -> [a] -> [(a,b)]
+grafico f = map2 id f
+
+-------------- Ejercicio 2 -----------------
+
+-- Definir, sin usar recursión, una función particionar :: [(a, b)] -> ([a], [b])
+-- que dada una lista de pares devuelve un par de listas con los elementos de cada coordenada.
+-- Ej: particionar [(1,3), (5,-2), (0,3)] ~> ([1, 5, 0], [3, -2, 3])
+
+particionar :: [(a, b)] -> ([a], [b])
+particionar = foldr (\(x,y) (rc1, rc2) -> (x:rc1, y:rc2)) ([], [])
+
+-------------- Ejercicio 3 -----------------
+
+data Figura = Circulo Float | Rectangulo Float Float
+
+-- definir una funcion esCuadrado :: Figura -> Bool que devuelve true sii la figura es un cuadrado.
+
+esCuadrado :: Figura -> Bool
+esCuadrado (Circulo _ ) = False
+esCuadrado (Rectangulo b h) = b == h
+
+-------------- Ejercicio 4 -----------------
+
+data Arbol a = Hoja a | Nodo a (Arbol a) (Arbol a)
+
+foldA :: (a -> b) -> (a -> b -> b -> b) -> Arbol a -> b
+foldA f _ ( Hoja x) = f x
+foldA f g ( Nodo x izq der) = g x ( foldA f g izq ) ( foldA f g der)
+
+-- a) Definir, sin usar recursión explícita, una función espejar :: Arbol a -> Arbol a
+-- que devuelve el árbol espejado, es decir, todo hijo izquierdo pasa a ser el derecho y viceversa.
+-- Ej: espejar (Nodo 1 (Nodo 2 ( Hoja 0) ( Hoja 5)) ( Hoja (-3))) ~> Nodo 1 (Hoja (-3)) (Nodo 2 (Hoja 5) (Hoja 0))
+
+espejar :: Arbol a -> Arbol a
+--espejar (Hoja x) = Hoja x
+--espejar (Nodo x izq der) = Nodo x (espejar der) (espejar izq)
+espejar = foldA Hoja (\x ri rd -> Nodo x rd ri)
