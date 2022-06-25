@@ -37,13 +37,18 @@ esClaro c = c == Rojo || c == Blanco
 
 {-
     2) Definir la función producto :: Nat -> Nat -> Nat.  
+    (n+1)*m == n*m + m
 -}
 
--- data Nat = Zero | Succ Nat
+data Nat = Zero | Succ Nat deriving Show
 
--- producto :: Nat -> Nat -> Nat
--- producto _ Zero = Zero
--- producto n (Succ m) = Succ * (producto n m) 
+suma :: Nat -> Nat -> Nat
+suma Zero m = m 
+suma (Succ n) m = Succ (suma n m)
+
+producto :: Nat -> Nat -> Nat
+producto Zero _ = Zero
+producto (Succ n) m = producto n m `suma` m
 
 {-
     3) Definir la función size :: Arbol a -> Int que devuelve la
