@@ -1,7 +1,7 @@
 -- Programación Funcional - Primer Parcial
 -- Modificar nombre del archivo por "nombre-apellido.hs"
 
--------------- Ejercicio 1 -----------------
+-------------- Ejercicio 1.3 -----------------
 
 -- Definir una función con el siguiente tipo
 --f1 :: Num a => (a -> b, a -> c) -> a -> (c,b)
